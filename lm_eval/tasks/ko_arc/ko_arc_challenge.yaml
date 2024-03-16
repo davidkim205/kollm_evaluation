@@ -1,0 +1,7 @@
+include: ko_arc_easy.yaml
+task: ko_arc_challenge
+dataset_path: davidkim205/ko_arc_challenge
+dataset_name: null
+training_split: train
+validation_split: validation
+test_split: test

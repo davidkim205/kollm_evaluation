@@ -1,0 +1,26 @@
+task: ko_mmlu
+dataset_path: json
+dataset_name: null
+dataset_kwargs:
+  data_files:
+    train: /work/komt_evaluation/datasets_ko_llm/K-MMLU-Preview-train.jsonl
+    validation: /work/komt_evaluation/datasets_ko_llm/K-MMLU-Preview-dev.jsonl
+    test: /work/komt_evaluation/datasets_ko_llm/K-MMLU-Preview-test.jsonl
+output_type: multiple_choice
+training_split: train
+
+validation_split: validation
+test_split: test
+fewshot_split: validation
+doc_to_text: "{{question.strip()}}\nA. {{A}}\nB. {{B}}\nC. {{C}}\nD. {{D}}\n정답："
+doc_to_choice: ["A", "B", "C", "D"]
+doc_to_target: "{{answer-1}}"
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+  - metric: acc_norm
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 1.0

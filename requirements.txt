@@ -1,0 +1,8 @@
+-e .
+trl
+peft
+accelerate
+datasets
+bitsandbytes
+scipy
+sentencepiece

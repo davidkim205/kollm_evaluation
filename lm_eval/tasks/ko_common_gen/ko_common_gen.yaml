@@ -1,0 +1,19 @@
+task: ko_common_gen
+dataset_path: davidkim205/ko_common_gen
+dataset_name: null
+output_type: multiple_choice
+training_split: train
+validation_split: null
+test_split: test
+doc_to_text: "{{concept_set}}\n 정답:"
+doc_to_target: label
+doc_to_choice: "{{[ending0, ending1, ending2, ending3]}}"
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+  - metric: acc_norm
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 1.0
