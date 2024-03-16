@@ -1,9 +1,9 @@
 # kollm_evaluation
-ko llm leaderboard와 같은 task 평가를 하기위해 자체 한글 평가 데이터셋을 구축하였고 구축한 데이터셋을 평가하는 repo이다.
+ko llm leaderboard와 같은 task 평가를 하기위해 자체 한글 평가 데이터셋을 구축하였고 구축한 데이터셋을 평가하는 프레임워크입니다.
 
-kollm_evaluation는 [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) 코드를 사용하고 우리가 구축한 데이터를 추가로 평가할수 있다. 
+kollm_evaluation는 [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) 코드를 사용하고 우리가 구축한 데이터를 추가로 평가할수 있습니다.
 
-아래는 우리가 구축한 데이터셋으로 영어 데이터셋을 번역하였다.
+아래는 우리가 구축한 데이터셋으로 영어 평가 데이터셋을 한글로 번역하거나 새롭게 구축한 데이터셋입니다.
 - [davidkim205/ko_arc_challenge](https://huggingface.co/datasets/davidkim205/ko_arc_challenge)
 - [davidkim205/ko_arc_easy](https://huggingface.co/datasets/davidkim205/ko_arc_easy)
 - [davidkim205/ko_truthful_qa](https://huggingface.co/datasets/davidkim205/ko_truthful_qa)
