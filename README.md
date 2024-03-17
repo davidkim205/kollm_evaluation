@@ -1,9 +1,13 @@
 # kollm_evaluation
-ko llm leaderboard와 같은 task 평가를 하기위해 자체 한글 평가 데이터셋을 구축하였고 구축한 데이터셋을 평가하는 repo이다.
+ko llm leaderboard와 같은 task 평가를 하기위해 자체 한글 평가 데이터셋을 구축하였고 모델을 평가한 프레임워크입니다.
+우리가 만든 nox 모델은 kollm_evaluation을 이용하여 자체 모델을 평가후에 ko llm leaderboard에 upload하여 1위를 차지하였습니다. 
 
-kollm_evaluation는 [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) 코드를 사용하고 우리가 구축한 데이터를 추가로 평가할수 있다. 
+이 저장소는 우리가 한국어 모델을 연구하고 빠르게 모델을 평가할수 있고 어떤 task에서 장/단점이 있는지 확인하기 위한 곳으로 많은 사용자가 이곳을 사용하여 좋은 모델을 개발할수 있도록 도움을 줄수 있을꺼라 믿습니다. 
 
-아래는 우리가 구축한 데이터셋으로 영어 데이터셋을 번역하였다.
+
+kollm_evaluation는 [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) 코드를 사용하고 우리가 구축한 데이터를 추가로 평가할수 있도록 task를 추가하였습니다.
+
+아래는 우리가 구축한 데이터셋으로 영어 데이터셋과 자체 연구한 데이터셋입니다.
 - [davidkim205/ko_arc_challenge](https://huggingface.co/datasets/davidkim205/ko_arc_challenge)
 - [davidkim205/ko_arc_easy](https://huggingface.co/datasets/davidkim205/ko_arc_easy)
 - [davidkim205/ko_truthful_qa](https://huggingface.co/datasets/davidkim205/ko_truthful_qa)
@@ -26,9 +30,185 @@ lm_eval --model hf --model_args pretrained=davidkim205/nox-solar-10.7b-v4,dtype=
 
 ```
 
-## Result
+## Result 2024/03/17
+https://huggingface.co/spaces/upstage/open-ko-llm-leaderboard
+
+| Model                               | Average | Ko-ARC | Ko-HellaSwag | Ko-MMLU | Ko-TruthfulQA | Ko-CommonGen V2 |
+| ----------------------------------- | ------- | ------ | ------------ | ------- | ------------- | --------------- |
+| davidkim205/nox-solar-10.7b-v4      | 67.77   | 73.55  | 72.07        | 57.93   | 79.32         | 55.96           |
+| davidkim205/nox-solar-10.7b-v2      | 65.38   | 73.46  | 67.32        | 58.7    | 71.94         | 55.49           |
+| Deepnoid/deep-solar-v2.0.1          | 61.45   | 72.18  | 57.07        | 54.12   | 66.37         | 57.5            |
+| davidkim205/komt-solar-10.7b-sft-v5 | 60.59   | 57.08  | 69.62        | 52.99   | 67.51         | 55.73           |
+| Edentns/DataVortexS-10.7B-dpo-v1.11 | 59.556  | 55.97  | 68.68        | 52.67   | 66.74         | 53.72           |
+
+### davidkim205/nox-solar-10.7b-v4
+```
+lm_eval --model hf --model_args pretrained=davidkim205/nox-solar-10.7b-v4,dtype=bfloat16 --num_fewshot 0 --batch_size 64 --tasks kobest,ko_hellaswag,ko_mmlu,ko_arc_easy,ko_truthfulqa,ko_common_gen --device cuda
+```
+
+|       Tasks       |Version|Filter|n-shot| Metric |Value |   |Stderr|
+|-------------------|-------|------|-----:|--------|-----:|---|------|
+|kobest             |N/A    |none  |     0|acc     |0.6080|±  |0.0069|
+|                   |       |none  |     0|f1      |0.5306|±  |N/A   |
+| - kobest_boolq    |      1|none  |     0|acc     |0.5591|±  |0.0133|
+|                   |       |none  |     0|f1      |0.4536|±  |N/A   |
+| - kobest_copa     |      1|none  |     0|acc     |0.7750|±  |0.0132|
+|                   |       |none  |     0|f1      |0.7747|±  |N/A   |
+| - kobest_hellaswag|      1|none  |     0|acc     |0.4840|±  |0.0224|
+|                   |       |none  |     0|f1      |0.4790|±  |N/A   |
+|                   |       |none  |     0|acc_norm|0.5700|±  |0.0222|
+| - kobest_sentineg |      1|none  |     0|acc     |0.8967|±  |0.0153|
+|                   |       |none  |     0|f1      |0.8963|±  |N/A   |
+| - kobest_wic      |      1|none  |     0|acc     |0.4881|±  |0.0141|
+|                   |       |none  |     0|f1      |0.3280|±  |N/A   |
+|ko_truthfulqa      |      2|none  |     0|acc     |0.6316|±  |0.0169|
+|ko_mmlu            |      1|none  |     0|acc     |0.4859|±  |0.0027|
+|                   |       |none  |     0|acc_norm|0.4859|±  |0.0027|
+|ko_hellaswag       |      1|none  |     0|acc     |0.6779|±  |0.0047|
+|                   |       |none  |     0|acc_norm|0.8593|±  |0.0035|
+|ko_common_gen      |      1|none  |     0|acc     |0.8721|±  |0.0085|
+|                   |       |none  |     0|acc_norm|0.8721|±  |0.0085|
+|ko_arc_easy        |      1|none  |     0|acc     |0.6655|±  |0.0138|
+|                   |       |none  |     0|acc_norm|0.7116|±  |0.0132|
+
+### davidkim205/nox-solar-10.7b-v2
+```
+lm_eval --model hf --model_args pretrained=davidkim205/nox-solar-10.7b-v2,dtype=float16 --num_fewshot 0 --batch_size 64 --tasks kobest,ko_hellaswag,ko_mmlu,ko_arc_easy,ko_truthfulqa,ko_common_gen --device cuda
+```
+
+|       Tasks       |Version|Filter|n-shot| Metric |Value |   |Stderr|
+|-------------------|-------|------|-----:|--------|-----:|---|------|
+|kobest             |N/A    |none  |     0|acc     |0.5933|±  |0.0069|
+|                   |       |none  |     0|f1      |0.4991|±  |N/A   |
+| - kobest_boolq    |      1|none  |     0|acc     |0.5071|±  |0.0133|
+|                   |       |none  |     0|f1      |0.3465|±  |N/A   |
+| - kobest_copa     |      1|none  |     0|acc     |0.7550|±  |0.0136|
+|                   |       |none  |     0|f1      |0.7548|±  |N/A   |
+| - kobest_hellaswag|      1|none  |     0|acc     |0.4980|±  |0.0224|
+|                   |       |none  |     0|f1      |0.4937|±  |N/A   |
+|                   |       |none  |     0|acc_norm|0.5900|±  |0.0220|
+| - kobest_sentineg |      1|none  |     0|acc     |0.9446|±  |0.0115|
+|                   |       |none  |     0|f1      |0.9446|±  |N/A   |
+| - kobest_wic      |      1|none  |     0|acc     |0.4881|±  |0.0141|
+|                   |       |none  |     0|f1      |0.3280|±  |N/A   |
+|ko_truthfulqa      |      2|none  |     0|acc     |0.5520|±  |0.0174|
+|ko_mmlu            |      1|none  |     0|acc     |0.4639|±  |0.0027|
+|                   |       |none  |     0|acc_norm|0.4639|±  |0.0027|
+|ko_hellaswag       |      1|none  |     0|acc     |0.6600|±  |0.0047|
+|                   |       |none  |     0|acc_norm|0.8499|±  |0.0036|
+|ko_common_gen      |      1|none  |     0|acc     |0.8598|±  |0.0089|
+|                   |       |none  |     0|acc_norm|0.8598|±  |0.0089|
+|ko_arc_easy        |      1|none  |     0|acc     |0.6391|±  |0.0140|
+|                   |       |none  |     0|acc_norm|0.6817|±  |0.0136|
 
 
+### Deepnoid/deep-solar-v2.0.1
+```
+lm_eval --model hf --model_args pretrained=Deepnoid/deep-solar-v2.0.1,dtype=float16 --num_fewshot 0 --batch_size 64 --tasks kobest --device cuda
+```
+|     Tasks      |Version|Filter|n-shot| Metric |Value |   |Stderr|
+|----------------|------:|------|-----:|--------|-----:|---|------|
+|kobest_hellaswag|      1|none  |     0|acc     |0.4860|±  |0.0224|
+|                |       |none  |     0|f1      |0.4827|±  |N/A   |
+|                |       |none  |     0|acc_norm|0.5860|±  |0.0220|
+|ko_truthfulqa   |      2|none  |     0|acc     |0.4933|±  |0.0175|
+|ko_mmlu         |      1|none  |     0|acc     |0.3857|±  |0.0026|
+|                |       |none  |     0|acc_norm|0.3857|±  |0.0026|
+|ko_hellaswag    |      1|none  |     0|acc     |0.6085|±  |0.0049|
+|                |       |none  |     0|acc_norm|0.8085|±  |0.0039|
+|ko_common_gen   |      1|none  |     0|acc     |0.8343|±  |0.0095|
+|                |       |none  |     0|acc_norm|0.8343|±  |0.0095|
+|ko_arc_easy     |      1|none  |     0|acc     |0.6067|±  |0.0143|
+|                |       |none  |     0|acc_norm|0.6544|±  |0.0139|
+
+|       Tasks       |Version|Filter|n-shot| Metric |Value |   |Stderr|
+|-------------------|-------|------|-----:|--------|-----:|---|------|
+|kobest             |N/A    |none  |     0|acc     |0.5832|±  |0.0070|
+|                   |       |none  |     0|f1      |0.4869|±  |N/A   |
+| - kobest_boolq    |      1|none  |     0|acc     |0.5021|±  |0.0133|
+|                   |       |none  |     0|f1      |0.3343|±  |N/A   |
+| - kobest_copa     |      1|none  |     0|acc     |0.7170|±  |0.0143|
+|                   |       |none  |     0|f1      |0.7166|±  |N/A   |
+| - kobest_hellaswag|      1|none  |     0|acc     |0.4860|±  |0.0224|
+|                   |       |none  |     0|f1      |0.4827|±  |N/A   |
+|                   |       |none  |     0|acc_norm|0.5860|±  |0.0220|
+| - kobest_sentineg |      1|none  |     0|acc     |0.9572|±  |0.0102|
+|                   |       |none  |     0|f1      |0.9572|±  |N/A   |
+| - kobest_wic      |      1|none  |     0|acc     |0.4881|±  |0.0141|
+|                   |       |none  |     0|f1      |0.3280|±  |N/A   |
+
+### Edentns/DataVortexS-10.7B-dpo-v1.11
+```
+lm_eval --model hf --model_args pretrained=Edentns/DataVortexS-10.7B-dpo-v1.11,dtype=float16 --num_fewshot 0 --batch_size 64 --tasks kobest --device cuda
+
+```
+hf (pretrained=Edentns/DataVortexS-10.7B-dpo-v1.11,dtype=float16), gen_kwargs: (None), limit: None, num_fewshot: 0, batch_size: 64
+|     Tasks      |Version|Filter|n-shot| Metric |Value |   |Stderr|
+|----------------|------:|------|-----:|--------|-----:|---|------|
+|kobest_hellaswag|      1|none  |     0|acc     |0.4480|±  |0.0223|
+|                |       |none  |     0|f1      |0.4461|±  |N/A   |
+|                |       |none  |     0|acc_norm|0.5160|±  |0.0224|
+|ko_truthfulqa   |      2|none  |     0|acc     |0.4688|±  |0.0175|
+|ko_mmlu         |      1|none  |     0|acc     |0.3859|±  |0.0026|
+|                |       |none  |     0|acc_norm|0.3859|±  |0.0026|
+|ko_hellaswag    |      1|none  |     0|acc     |0.7073|±  |0.0045|
+|                |       |none  |     0|acc_norm|0.8707|±  |0.0033|
+|ko_common_gen   |      1|none  |     0|acc     |0.7208|±  |0.0115|
+|                |       |none  |     0|acc_norm|0.7208|±  |0.0115|
+|ko_arc_easy     |      1|none  |     0|acc     |0.4309|±  |0.0145|
+|                |       |none  |     0|acc_norm|0.5307|±  |0.0146|
+
+|       Tasks       |Version|Filter|n-shot| Metric |Value |   |Stderr|
+|-------------------|-------|------|-----:|--------|-----:|---|------|
+|kobest             |N/A    |none  |     0|acc     |0.7027|±  |0.0063|
+|                   |       |none  |     0|f1      |0.6823|±  |N/A   |
+| - kobest_boolq    |      1|none  |     0|acc     |0.9259|±  |0.0070|
+|                   |       |none  |     0|f1      |0.9259|±  |N/A   |
+| - kobest_copa     |      1|none  |     0|acc     |0.7370|±  |0.0139|
+|                   |       |none  |     0|f1      |0.7367|±  |N/A   |
+| - kobest_hellaswag|      1|none  |     0|acc     |0.4480|±  |0.0223|
+|                   |       |none  |     0|f1      |0.4461|±  |N/A   |
+|                   |       |none  |     0|acc_norm|0.5160|±  |0.0224|
+| - kobest_sentineg |      1|none  |     0|acc     |0.4937|±  |0.0251|
+|                   |       |none  |     0|f1      |0.3305|±  |N/A   |
+| - kobest_wic      |      1|none  |     0|acc     |0.5937|±  |0.0138|
+|                   |       |none  |     0|f1      |0.5722|±  |N/A   |
+
+### LDCC/LDCC-SOLAR-10.7B
+```
+lm_eval --model hf --model_args pretrained=LDCC/LDCC-SOLAR-10.7B,dtype=float16 --num_fewshot 0 --batch_size 64 --tasks kobest --device cuda
+
+```
+|     Tasks      |Version|Filter|n-shot| Metric |Value |   |Stderr|
+|----------------|------:|------|-----:|--------|-----:|---|------|
+|kobest_hellaswag|      1|none  |     0|acc     |0.4660|±  |0.0223|
+|                |       |none  |     0|f1      |0.4617|±  |N/A   |
+|                |       |none  |     0|acc_norm|0.5460|±  |0.0223|
+|ko_truthfulqa   |      2|none  |     0|acc     |0.4517|±  |0.0174|
+|ko_mmlu         |      1|none  |     0|acc     |0.3720|±  |0.0026|
+|                |       |none  |     0|acc_norm|0.3720|±  |0.0026|
+|ko_hellaswag    |      1|none  |     0|acc     |0.6912|±  |0.0046|
+|                |       |none  |     0|acc_norm|0.8619|±  |0.0034|
+|ko_common_gen   |      1|none  |     0|acc     |0.7828|±  |0.0105|
+|                |       |none  |     0|acc_norm|0.7828|±  |0.0105|
+|ko_arc_easy     |      1|none  |     0|acc     |0.4147|±  |0.0144|
+|                |       |none  |     0|acc_norm|0.4906|±  |0.0146|
+
+|       Tasks       |Version|Filter|n-shot| Metric |Value |   |Stderr|
+|-------------------|-------|------|-----:|--------|-----:|---|------|
+|kobest             |N/A    |none  |     0|acc     |0.6968|±  |0.0064|
+|                   |       |none  |     0|f1      |0.6838|±  |N/A   |
+| - kobest_boolq    |      1|none  |     0|acc     |0.9060|±  |0.0078|
+|                   |       |none  |     0|f1      |0.9058|±  |N/A   |
+| - kobest_copa     |      1|none  |     0|acc     |0.7370|±  |0.0139|
+|                   |       |none  |     0|f1      |0.7365|±  |N/A   |
+| - kobest_hellaswag|      1|none  |     0|acc     |0.4660|±  |0.0223|
+|                   |       |none  |     0|f1      |0.4617|±  |N/A   |
+|                   |       |none  |     0|acc_norm|0.5460|±  |0.0223|
+| - kobest_sentineg |      1|none  |     0|acc     |0.5793|±  |0.0248|
+|                   |       |none  |     0|f1      |0.5196|±  |N/A   |
+| - kobest_wic      |      1|none  |     0|acc     |0.5603|±  |0.0140|
+|                   |       |none  |     0|f1      |0.5346|±  |N/A   |
 
 ----------------------
 
