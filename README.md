@@ -31,6 +31,15 @@ lm_eval --model hf --model_args pretrained=davidkim205/nox-solar-10.7b-v4,dtype=
 ```
 
 ## Result 2024/03/17
+
+| Average     | Ko-TruthfulQA_mc1 | Ko-MMLU | Ko-HellaSwag | Ko-CommonGen V2 | Ko-ARC-Easy | kobest | kobest_boolq | kobest_copa | kobest_hellaswag | kobest_sentineg | kobest_wic |
+| ----------- | ----------------- | ------- | ------------ | --------------- | ----------- | ------ | ------------ | ----------- | ---------------- | --------------- | ---------- |
+| 69.48       | 63.16             | 48.59   | 85.93        | 87.21           | 71.16       | 60.8   | 55.91        | 77.5        | 57               | 89.67           | 48.81      |
+| 66.68       | 55.2              | 46.39   | 84.99        | 85.98           | 68.17       | 59.33  | 50.71        | 75.5        | 59               | 94.46           | 48.81      |
+| 62.66       | 49.33             | 38.57   | 80.85        | 83.43           | 65.44       | 58.32  | 50.21        | 71.7        | 58.6             | 95.72           | 48.81      |
+| 61.32666667 | 46.88             | 38.59   | 87.07        | 72.08           | 53.07       | 70.27  | 92.59        | 73.7        | 51.6             | 49.37           | 59.37      |
+| 60.93       | 45.17             | 37.2    | 86.19        | 78.28           | 49.06       | 69.68  | 90.6         | 73.7        | 54.6             | 57.93           | 56.03      |
+
 https://huggingface.co/spaces/upstage/open-ko-llm-leaderboard
 
 | Model                               | Average | Ko-ARC | Ko-HellaSwag | Ko-MMLU | Ko-TruthfulQA | Ko-CommonGen V2 |
